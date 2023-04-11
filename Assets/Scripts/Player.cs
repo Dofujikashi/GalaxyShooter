@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _fireRate = 0.5f;
     [SerializeField] private short _health = 5;
     [SerializeField] private GameObject _shield;
+    [SerializeField] private GameObject _explosionPrefab;
+    [SerializeField] private GameObject[] _damageStages;
 
     private BorderManager _borderM;
     private PlayerInputAction _controller;
@@ -47,6 +49,9 @@ public class Player : MonoBehaviour
     {
         _controller.PlayerMap.Disable();
         _spawnM.OnPlayerDeath();
+        GameObject explosion = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+        explosion.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+        Destroy(explosion, 2.37f);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -63,7 +68,7 @@ public class Player : MonoBehaviour
 
     public void PrepareDestruction()
     {
-        Destroy(gameObject);
+        Destroy(gameObject, 0.05f);
     }
 
     private void ControlMovement()
@@ -127,6 +132,28 @@ public class Player : MonoBehaviour
 
     private void CheckHealth()
     {
+        switch (_health)
+        {
+            case 4:
+                _damageStages[0].SetActive(true);
+                break;
+
+            case 3:
+                _damageStages[1].SetActive(true);
+                break;
+
+            case 2:
+                _damageStages[2].SetActive(true);
+                break;
+
+            case 1:
+                _damageStages[3].SetActive(true);
+                break;
+
+            default:
+                break;
+        }
+
         if (_health < 1)
         {
             Destroy(gameObject);

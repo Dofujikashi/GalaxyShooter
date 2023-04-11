@@ -29,6 +29,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemy());
         StartCoroutine(SpawnPowerUp());
+        StartCoroutine(SpawnAsteroid());
     }
 
     IEnumerator SpawnEnemy()
@@ -81,6 +82,7 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-_borderM.GetX(), _borderM.GetX()), _spawnY, 0);
             GameObject newAsteroid = Instantiate(_asteroidPrefab, posToSpawn, Quaternion.identity);
+            newAsteroid.gameObject.GetComponent<Asteroid>().movementSpeed = (short) Random.Range(2, 10);
             newAsteroid.transform.parent = transform;
             yield return new WaitForSeconds(_asteroidSpawnRate);
         }

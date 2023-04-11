@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speed = 1;
     [SerializeField] private short _health = 3;
     [SerializeField] private float _enemyLineY = 3;
+    [SerializeField] private GameObject _explosionPrefab;
 
     private BorderManager _borderM;
     private SpawnManager _spawnM;
@@ -15,16 +16,12 @@ public class Enemy : MonoBehaviour
     private bool _rotationDirection = false;
     private bool _isCharging = false;
     private Player _player;
-    private Animator _animator;
-    private Rigidbody2D _rigidBody;
 
     private void Awake()
     {
         _borderM = FindObjectOfType<BorderManager>().GetComponent<BorderManager>();
         _spawnM = FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
         _player = _spawnM.GetPlayer().GetComponent<Player>();
-        _animator = GetComponent<Animator>();
-        _rigidBody = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -64,10 +61,10 @@ public class Enemy : MonoBehaviour
 
     public void PrepareDestruction()
     {
-        _rigidBody.simulated = false;
-        _animator.SetTrigger("OnEnemyDestroyed");
-        _speed = 0;
-        Destroy(gameObject, 2.37f);
+        GameObject explosion = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+        explosion.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+        Destroy(explosion, 2.37f);
+        Destroy(gameObject, 0.05f);
     }
 
     void ControlMovement()

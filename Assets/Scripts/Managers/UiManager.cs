@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,7 +27,15 @@ public class UiManager : MonoBehaviour
 
     public void UpdateHealth(short health)
     {
-        _healthImage.sprite = _healthSprites[health];
+        try
+        {
+            _healthImage.sprite = _healthSprites[health];
+        } 
+        catch (IndexOutOfRangeException)
+        {
+            _healthImage.sprite = _healthSprites[0];
+        }
+
         if (health < 1)
         {
             OnPlayerDeath();
