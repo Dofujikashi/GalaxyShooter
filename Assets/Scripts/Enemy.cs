@@ -16,12 +16,14 @@ public class Enemy : MonoBehaviour
     private bool _rotationDirection = false;
     private bool _isCharging = false;
     private Player _player;
+    private AudioSource _audioSource;
 
     private void Awake()
     {
         _borderM = FindObjectOfType<BorderManager>().GetComponent<BorderManager>();
         _spawnM = FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
         _player = _spawnM.GetPlayer().GetComponent<Player>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -126,7 +128,8 @@ public class Enemy : MonoBehaviour
         while (_health > 1)
         {
             _spawnM.SpawnEnemyLazer(transform.position);
-            yield return new WaitForSeconds(Random.Range(0.5f, 3.0f));
+            _audioSource.Play();
+            yield return new WaitForSeconds(Random.Range(0.5f, 2.5f));
         }
     }
 

@@ -28,6 +28,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "OptionMap",
+            "id": "d4cf16c7-7066-46c5-915b-1bba87c37ea1",
+            "actions": [
+                {
+                    "name": "Quit Game",
+                    "type": "Button",
+                    "id": "47dc791d-8379-4cc4-9f56-73187316a6b2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f9e76267-8d8c-4208-89d1-cfbc5d08389d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "Quit Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

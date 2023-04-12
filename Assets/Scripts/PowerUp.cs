@@ -8,6 +8,12 @@ public class PowerUp : MonoBehaviour
     // 1: Speed Boost
     // 2. Shield
     [SerializeField] private short id;
+    private AudioManager _audioManager;
+
+    private void Awake()
+    {
+        _audioManager = FindObjectOfType<AudioManager>().GetComponent<AudioManager>();
+    }
 
     void Update()
     {
@@ -28,6 +34,7 @@ public class PowerUp : MonoBehaviour
                     case 2: player.EnableShield(); break;
                 }
             }
+            _audioManager.PlayPowerUp();
             Destroy(gameObject);
         }
     }

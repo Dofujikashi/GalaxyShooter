@@ -18,7 +18,6 @@ public class Asteroid : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("entered the func");
         switch (other.tag)
         {
             case "PlayerLazer":
@@ -42,10 +41,16 @@ public class Asteroid : MonoBehaviour
             case "Player":
                 if (other.transform.TryGetComponent(out Player player))
                 {
-                    Debug.Log("got player component");
                     player.TakeDamage(5);
-                    Debug.Log("player took 5 damage");
-                    TakeDurability(5);
+
+                    if (player.IsShieldActive)
+                    {
+                        PrepareDestruction();
+                    }
+                    else
+                    {
+                        TakeDurability(5);
+                    }
                 }
                 break;
         }

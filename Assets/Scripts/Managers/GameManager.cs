@@ -5,23 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private GameOverInputAction _gameOverController;
+    private GameManagerInputAction _gameController;
 
     private void Awake()
     {
-        _gameOverController = new GameOverInputAction();
-        _gameOverController.Disable();
-        _gameOverController.GameOverMap.RestartGame.started += (ctx) => OnRestart();
+        _gameController = new GameManagerInputAction();
+        _gameController.Enable();
+        _gameController.GameOverMap.Disable();
+
+        _gameController.GameOverMap.RestartGame.started += (ctx) => OnRestart();
+        _gameController.OptionMap.QuitGame.started += (ctx) => Application.Quit();
     }
 
     private void OnRestart()
     {
         SceneManager.LoadScene(1);
-        _gameOverController.Disable();
+        _gameController.GameOverMap.Disable();
     }
 
     public void EnableGameOverControls()
     {
-        _gameOverController.Enable();
+        _gameController.GameOverMap.Enable();
     }
 }

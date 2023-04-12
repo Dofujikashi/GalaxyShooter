@@ -16,11 +16,13 @@ public class Player : MonoBehaviour
     private PlayerInputAction _controller;
     private SpawnManager _spawnM;
     private UiManager _uiM;
+    private AudioSource _audioSource;
+    private Animator _animator;
 
     private float _nextFire = 0.0f;
     private bool _isTripleLazerActive = false;
     private bool _isSpeedBoostActive = false;
-    private bool _isShieldActive = false;
+    public bool IsShieldActive { get; private set; } = false;
     private short _tripleLazerStack = 0;
     private short _speedBoostStack = 0;
     private short _shieldStack = 0;
@@ -31,6 +33,8 @@ public class Player : MonoBehaviour
         _borderM = FindObjectOfType<BorderManager>().GetComponent<BorderManager>();
         _spawnM = FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
         _uiM = FindObjectOfType<UiManager>().GetComponent<UiManager>();
+        _audioSource = GetComponent<AudioSource>();
+        _animator = GetComponent<Animator>();
         _controller = new PlayerInputAction();
     }
 
@@ -76,7 +80,7 @@ public class Player : MonoBehaviour
         Vector2 rawMovement = _controller.PlayerMap.Move.ReadValue<Vector2>().normalized;
         Vector3 movement = new Vector3(rawMovement.x, rawMovement.y, 0);
         transform.position += movement * _speed * Time.deltaTime;
-
+        _animator.SetFloat("MovementSpeed", rawMovement.x);
         // Check X Axis
         if (transform.position.x >= _borderM.GetX())
         {
@@ -111,12 +115,13 @@ public class Player : MonoBehaviour
             {
                 _spawnM.SpawnPlayerLazer(transform.position);
             }
+            _audioSource.Play();
         }
     }
 
     public void TakeDamage()
     {
-        if (_isShieldActive) return;
+        if (IsShieldActive) return;
         _health--;
         _uiM.UpdateHealth(_health);
         CheckHealth();
@@ -124,7 +129,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(short damage)
     {
-        if (_isShieldActive) return;
+        if (IsShieldActive) return;
         _health -= damage;
         _uiM.UpdateHealth(_health);
         CheckHealth();
@@ -205,7 +210,7 @@ public class Player : MonoBehaviour
     public void EnableShield()
     {
         _shieldStack++;
-        while (!_isShieldActive)
+        while (!IsShieldActive)
         {
             StartCoroutine(ShieldDuration());
         }
@@ -213,14 +218,14 @@ public class Player : MonoBehaviour
 
     private IEnumerator ShieldDuration()
     {
-        _isShieldActive = true;
+        IsShieldActive = true;
         _shield.SetActive(true);
         while (_shieldStack > 0)
         {
             yield return new WaitForSeconds(10);
             _shieldStack--;
         }
-        _isShieldActive = false;
+        IsShieldActive = false;
         _shield.SetActive(false);
     }
 
