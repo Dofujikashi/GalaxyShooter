@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Image _healthImage;
     [SerializeField] private TMP_Text _gameOverText;
     [SerializeField] private TMP_Text _restartGameText;
+    [SerializeField] private GameObject _pausePanel;
 
     private GameManager _gameManager;
 
@@ -59,5 +61,27 @@ public class UiManager : MonoBehaviour
             _gameOverText.text = "";
             yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        _pausePanel.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        _pausePanel.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }

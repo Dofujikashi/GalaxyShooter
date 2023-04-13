@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnM;
     private UiManager _uiM;
     private AudioSource _audioSource;
-    private Animator _animator;
 
     private float _nextFire = 0.0f;
     private bool _isTripleLazerActive = false;
@@ -34,7 +33,6 @@ public class Player : MonoBehaviour
         _spawnM = FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
         _uiM = FindObjectOfType<UiManager>().GetComponent<UiManager>();
         _audioSource = GetComponent<AudioSource>();
-        _animator = GetComponent<Animator>();
         _controller = new PlayerInputAction();
     }
 
@@ -80,7 +78,7 @@ public class Player : MonoBehaviour
         Vector2 rawMovement = _controller.PlayerMap.Move.ReadValue<Vector2>().normalized;
         Vector3 movement = new Vector3(rawMovement.x, rawMovement.y, 0);
         transform.position += movement * _speed * Time.deltaTime;
-        _animator.SetFloat("MovementSpeed", rawMovement.x);
+        
         // Check X Axis
         if (transform.position.x >= _borderM.GetX())
         {
